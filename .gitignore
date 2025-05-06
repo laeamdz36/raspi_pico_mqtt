@@ -1,0 +1,11 @@
+.venv
+.idea
+weather.db
+/db_data
+/.vscode
+.micropico
+.todo
+# Bytecode files
+__pycache__/
+*.py[cod]
+*$py.class
