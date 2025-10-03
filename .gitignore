@@ -1,11 +1,51 @@
-.venv
-.idea
-weather.db
-/db_data
-/.vscode
-.micropico
-.todo
-# Bytecode files
+# =======================================
+# Archivos y directorios de Python
+# =======================================
+
+# Directorio de entornos virtuales
+# Ignora el directorio donde se crean los entornos virtuales.
+# Esto es esencial, ya que las dependencias deben ser instaladas por cada usuario.
+venv/
+.venv/
+
+# Archivos de caché del intérprete
+# Ignora los directorios __pycache__ y los archivos .pyc, que son generados automáticamente.
 __pycache__/
 *.py[cod]
-*$py.class
+
+# Archivos de pruebas
+# Ignora los archivos generados por pytest, si se utilizan.
+.pytest_cache/
+.coverage
+
+# Archivos de datos temporales
+# Ignora archivos comunes de datos que se generan y no deben estar en el control de versiones.
+*.tmp
+*.log
+*.sqlite3
+
+# Archivos de metadatos del IDE (ej. VS Code, PyCharm)
+# Ignora los archivos de configuración y metadatos que son específicos de la máquina local.
+.idea/
+.vscode/
+
+# Archivos de Pipenv
+# Ignora el entorno virtual y la caché de Pipenv.
+# La recomendación general es incluir Pipfile.lock en el control de versiones.
+.env
+Pipfile.lock*
+
+# =======================================
+# Archivos de configuración del proyecto
+# =======================================
+/pi_pico_cfg.py
+
+# =======================================
+# Archivos de configuración del sistema operativo
+# =======================================
+
+# MacOS
+.DS_Store
+
+# Windows
+Thumbs.db
