@@ -794,7 +794,7 @@ class MQTTClient(MQTT_base):
             await self.wifi_connect(quick)  # On 1st call, caller handles error
             # Note this blocks if DNS lookup occurs. Do it once to prevent
             # blocking during later internet outage:
-            self._addr = socket.getaddrinfo(self.server, self.port)[0][-1]
+            self._addr = socket.getaddrinfo(self.server, int(self.port))[0][-1]
         self._in_connect = True  # Disable low level ._isconnected check
         try:
             is_clean = self._clean

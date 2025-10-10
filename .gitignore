@@ -39,6 +39,7 @@ Pipfile.lock*
 # Archivos de configuración del proyecto
 # =======================================
 /pi_pico_cfg.py
+*.conf
 
 # =======================================
 # Archivos de configuración del sistema operativo

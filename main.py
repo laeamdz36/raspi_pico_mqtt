@@ -6,19 +6,8 @@ from utime import sleep
 from mqtt_as import MQTTClient, config
 from bme280_float import *
 from picozero import pico_temp_sensor
-from pi_pico_cfg import *
 
-# Async functions
-# ************************************
-# Start main loop
-# Load configs
-# Init network - handle errors
-# Read sensors - handle errors
-# Publish to MQTT - handle errors
-# ************************************
-
-
-# ------------------------------------ Congigs
+# ------------------------------------ Configurations
 pin_led = Pin("LED", Pin.OUT)
 i2c = I2C(0, sda=Pin(4), scl=Pin(5), freq=100000)
 bme280 = BME280(i2c=i2c)
@@ -26,22 +15,27 @@ last_r = {"temp": None,
           "hum": None,
           "pres": None,
           "cpu_temp": None}  # last reading
-# ------------------------------------ WLAN and MQTT Config
-config['ssid'] = NET_SSID
-config['wifi_pw'] = NET_SSID_PWD
-config['server'] = MQTT_BROKER
-config['port'] = MQTT_PORT
-config['user'] = MQTT_USER
-config['password'] = MQTT_USER_PWD
-config['client_id'] = MQTT_CLIENT_ID
-# ------------------------------------
-client = MQTTClient(config)
 
-# ------------------------------------
+
+def load_conf(filename="config.conf"):
+    """Read and load the local config file"""
+
+    global config
+    try:
+        with open(filename, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith("#"):
+                    key, value = line.split("=", 1)
+                    config[key.strip()] = value.strip()
+    except Exception as e:
+        print(f"Reading error config file: {e}")
+    sleep(2)
 
 
 async def read_bme280(sensor):
     """Read the data from the sensod BME 280"""
+
     global last_r
     while True:
         # temp, pressure, humidity
@@ -71,7 +65,7 @@ async def mqtt_publish(client):
     while last_r["temp"] is None:
         await asyncio.sleep(1)
 
-    m_topic = "pico02"
+    m_topic = "pico01"
     while True:
 
         await client.publish(m_topic + "/temperature",
@@ -97,6 +91,8 @@ async def main(client):
     asyncio.create_task(read_bme280(bme280))  # LED parpadea cada 0.5s
     await mqtt_publish(client)           # sigue con envío periódico
 
+load_conf()
+client = MQTTClient(config)
 # callbacks
 client.on_msg = callback
 
